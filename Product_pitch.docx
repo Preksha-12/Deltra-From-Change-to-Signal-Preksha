@@ -1,0 +1,5 @@
+I built Deltra, an intelligent market watchlist engine that transforms raw price noise into actionable statistical signals. Designed around an event-driven Fastify backend, Redis pub/sub, and persistent WebSockets, Deltra pairs sub-5ms telemetry with an institutional-grade React terminal.
+
+Traditional watchlists trigger alert fatigue with arbitrary percentage thresholds. I chose volatility-normalized Z-scores and rolling standard deviations to evaluate moves against each asset’s historical baseline, instantly surfacing true anomalies, volume surges, and structural breakouts.
+
+Coupled with server-side baseline cursors and an interactive Chaos Lab demonstrating fault-tolerant resilience under provider lag and out-of-order ticks, Deltra turns overwhelming change into focus.
