@@ -2,10 +2,10 @@ import { WatchlistSymbol, SignificanceEvent, User, ChaosStatus } from './types.j
 
 const API_BASE = (import.meta as any).env?.VITE_API_URL || '';
 
-function getAuthHeaders(): HeadersInit {
+function getAuthHeaders(includeContentType = false): HeadersInit {
   const token = localStorage.getItem('smw_auth_token');
   return {
-    'Content-Type': 'application/json',
+    ...(includeContentType ? { 'Content-Type': 'application/json' } : {}),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 }
@@ -57,7 +57,7 @@ export const api = {
   async addSymbol(symbol: string): Promise<{ message: string; symbol: string; currentPrice: number }> {
     const res = await fetch(`${API_BASE}/watchlist`, {
       method: 'POST',
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(true),
       body: JSON.stringify({ symbol }),
     });
     return handleResponse(res);
@@ -83,7 +83,7 @@ export const api = {
   async ackWatchlist(symbols?: string[]): Promise<{ message: string; symbols: string[] }> {
     const res = await fetch(`${API_BASE}/watchlist/ack`, {
       method: 'POST',
-      headers: getAuthHeaders(),
+      headers: getAuthHeaders(true),
       body: JSON.stringify({ symbols }),
     });
     return handleResponse(res);

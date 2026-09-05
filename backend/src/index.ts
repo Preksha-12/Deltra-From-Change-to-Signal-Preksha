@@ -40,6 +40,19 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Support empty JSON bodies on DELETE / GET without error
+  fastify.addContentTypeParser('application/json', { parseAs: 'string' }, (_req, body, defaultDone) => {
+    if (!body || (typeof body === 'string' && body.trim().length === 0)) {
+      defaultDone(null, {});
+      return;
+    }
+    try {
+      defaultDone(null, JSON.parse(body));
+    } catch (err) {
+      defaultDone(err, undefined);
+    }
+  });
+
   // 4. Register JWT
   await fastify.register(jwt, {
     secret: config.jwtSecret,
